@@ -31,8 +31,10 @@ class ProfileCubit extends Cubit<ProfileState> {
           .collection(kVideoCollection)
           .where('uid', isEqualTo: uid)
           .get();
-      userLikes = snapshot.docs
-          .fold<int>(0, (total, doc) => Video.fromMap(doc.data()).likes.length);
+      userLikes = snapshot.docs.fold<int>(0, (total, doc) {
+        final likes = Video.fromMap(doc.data()).likes;
+        return total + likes.length;
+      });
       thumbnails = snapshot.docs
           .map<String>((doc) => Video.fromMap(doc.data()).thumbnail)
           .toList();
